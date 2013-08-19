@@ -202,6 +202,45 @@ function bernoulli() {
 После сборки библотеки будут полностью эквивалентны.
 ### Взаимно рекурсивные модули
 В YAMD возможно добавить в модуль функцию, которая использует функцию другого модуля, а та первую. 
-Впрочем в случае CommonJS и AMD это тоже возможно, разница только в кол-ве кода. Для примера напишем процесс из 
-[гипотезы Коллатца](http://ru.wikipedia.org/wiki/%D0%93%D0%B8%D0%BF%D0%BE%D1%82%D0%B5%D0%B7%D0%B0_%D0%9A%D0%BE%D0%BB%D0%BB%D0%B0%D1%82%D1%86%D0%B0). 
+Впрочем в случае CommonJS и AMD это тоже возможно, разница только в кол-ве кода. Для примера напишем функцию,
+вычисляющую кол-во шагов в 
+[процессе Коллатца](http://ru.wikipedia.org/wiki/%D0%93%D0%B8%D0%BF%D0%BE%D1%82%D0%B5%D0%B7%D0%B0_%D0%9A%D0%BE%D0%BB%D0%BB%D0%B0%D1%82%D1%86%D0%B0). 
+Как и в предыдушем примере структура каталога не будет меняться в случае AMD, CommonJS и YAMD:
+```bash
+> find math/collatz
+math/collatz
+math/collatz/steps.js
+math/collatz/inc.js
+math/collatz/dec.js
+```
 Начнем с **AMD**
+```javascript
+// FILE ./math/collatz/steps.js
+define(["require", "math/collatz/inc", "math/collatz/dec"],
+    function(require, inc, dec) {
+        return function(n) {
+            if (n==1) return 0;
+            if (n%2==0) return require("math/collatz/dec")(n);
+            if (n%2==1) return require("math/collatz/inc")(n);
+        };
+    }
+);
+
+// FILE ./math/collatz/inc.js
+define(["require", "math/collatz/steps"],
+    function(require, steps) {
+        return function(n) {
+            return require("math/collatz/steps")(3*n+1)+1;
+        };
+    }
+);
+
+// FILE ./math/collatz/dec.js
+define(["require", "math/collatz/steps"],
+    function(require, steps) {
+        return function(n) {
+            return require("math/collatz/steps")(n/2)+1;
+        };
+    }
+);
+```
