@@ -213,7 +213,9 @@ math/collatz/steps.js
 math/collatz/inc.js
 math/collatz/dec.js
 ```
-Начнем с **AMD**
+Начнем с **AMD** и опишем рекурсивные зависимости. Согласно 
+[этому документу](http://requirejs.org/docs/api.html#circular) нам пришлось добавить зависимость от require и 
+использовать её для явного импорта зависимостей внутри функций.
 ```javascript
 // FILE ./math/collatz/steps.js
 define(["require", "math/collatz/inc", "math/collatz/dec"],
@@ -243,4 +245,49 @@ define(["require", "math/collatz/steps"],
         };
     }
 );
+```
+Рассмотрим тот же пример в **CommonJS** - код очень похож на обычный CommonJS, за одним исключением: 
+нам пришлось поместить вызов require внутрь функций.
+```javascript
+// FILE ./math/collatz/steps.js
+function steps(n) {
+    if (n==1) return 0;
+    if (n%2==0) return require('./dec')(n);
+    if (n%2==1) return require('./inc')(n);
+}
+module.exports = steps;
+
+// FILE ./math/collatz/inc.js
+function inc(n) {
+    return require('./steps')(3*n+1)+1;
+}
+module.exports = inc;
+
+// FILE ./math/collatz/dec.js
+function dec(n) {
+    return require('./steps')(n/2)+1;
+}
+module.exports = dec;
+```
+В случае с **YAMD**, рекурсивный код ничем не отличается от обычного.
+```javascript
+// FILE ./math/collatz/steps.js
+expose(steps);
+function steps(n) {
+    if (n==1) return 0;
+    if (n%2==0) return root.collatz.dec(n);
+    if (n%2==1) return root.collatz.inc(n);
+}
+
+// FILE ./math/collatz/inc.js
+expose(inc)
+function inc(n) {
+    return root.collatz.steps(3*n+1)+1;
+}
+
+// FILE ./math/collatz/dec.js
+expose(dec)
+function dec(n) {
+    return root.collatz.steps(n/2)+1;
+}
 ```
