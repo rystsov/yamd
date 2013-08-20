@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="require.js"></script>
+</head>
+<body>
+</body>
+    <script type="text/javascript">
+        require(["math/add", "math/multiply", "math/collatz/steps"], function(add, multiply, steps) {
+            console.info(add(2,7));
+            console.info(multiply(2,7));
+            console.info(steps(3));
+        });
+    </script>
+</html>
