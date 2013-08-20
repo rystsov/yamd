@@ -313,8 +313,8 @@ function tableLookup(table, f) {
 Тогда нам достаточно изменить файл steps.js в YAMD подходе следующем образом
 ```javascript
 // FILE ./math/collatz/steps.js
-expose(tableLookup(table, steps), ctor);
 var table = {};
+expose(tableLookup(table, steps), ctor);
 function ctor() {
     table[3] = steps(3);
 }
