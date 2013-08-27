@@ -135,6 +135,6 @@ if (data.length==0) {
 }
 var name = path.basename(args.path);
 if (args.commonjs) {
-    fs.writeFileSync(name + ".js", rendercommonjs(name, data).str(), {flag: "w"});
+    fs.writeFileSync(name + ".common.js", rendercommonjs(name, data).str(), {flag: "w"});
 }
-fs.writeFileSync(name + ".common.js", renderiife(name, data).str(), {flag: "w"});
+fs.writeFileSync(name + ".js", renderiife(name, data).str(), {flag: "w"});

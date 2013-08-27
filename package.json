@@ -1,0 +1,17 @@
+{
+    "name": "yamd",
+    "version": "0.0.1",
+    "engines": {
+        "node": ">= 0.6.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rystsov/yamd.git"
+    },
+    "dependencies": {
+        "argparse": "*"
+    },
+    "bin": {
+        "yamd": "yamd.js"
+    }
+}

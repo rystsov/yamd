@@ -59,22 +59,40 @@ var math = (function(){
         }
         return [
             {
-                path: ["multiply"],
+                path: ["add"],
                 content: function(root, expose) {
-                    expose(multiply);
+                    expose(add);
                     
-                    function multiply(a,b) {
-                        var result = 0;
-                        for (var i=0;i<a;i++) {
-                            result = root.add(result, b);
-                        }
-                        return result;
+                    function add(a, b) {
+                        return a + b;
                     }
                     
                 }
             },
             {
-                path: ["collatz", "steps"],
+                path: ["collatz","dec"],
+                content: function(root, expose) {
+                    expose(dec)
+                    
+                    function dec(n) {
+                        return root.collatz.steps(n/2)+1;
+                    }
+                    
+                }
+            },
+            {
+                path: ["collatz","inc"],
+                content: function(root, expose) {
+                    expose(inc)
+                    
+                    function inc(n) {
+                        return root.collatz.steps(3*n+1)+1;
+                    }
+                    
+                }
+            },
+            {
+                path: ["collatz","steps"],
                 content: function(root, expose) {
                     var table = {};
                     
@@ -99,39 +117,6 @@ var math = (function(){
                 }
             },
             {
-                path: ["collatz", "inc"],
-                content: function(root, expose) {
-                    expose(inc)
-                    
-                    function inc(n) {
-                        return root.collatz.steps(3*n+1)+1;
-                    }
-                    
-                }
-            },
-            {
-                path: ["collatz", "dec"],
-                content: function(root, expose) {
-                    expose(dec)
-                    
-                    function dec(n) {
-                        return root.collatz.steps(n/2)+1;
-                    }
-                    
-                }
-            },
-            {
-                path: ["add"],
-                content: function(root, expose) {
-                    expose(add);
-                    
-                    function add(a, b) {
-                        return a + b;
-                    }
-                    
-                }
-            },
-            {
                 path: ["distributions"],
                 content: function(root, expose) {
                     expose({
@@ -146,6 +131,21 @@ var math = (function(){
                     function bernoulli() {
                         throw new Error("TODO");
                     }
+                }
+            },
+            {
+                path: ["multiply"],
+                content: function(root, expose) {
+                    expose(multiply);
+                    
+                    function multiply(a,b) {
+                        var result = 0;
+                        for (var i=0;i<a;i++) {
+                            result = root.add(result, b);
+                        }
+                        return result;
+                    }
+                    
                 }
             }
         ];
