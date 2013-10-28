@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var fs = require("fs");
 var path = require("path");
 var ArgumentParser = require('argparse').ArgumentParser;
