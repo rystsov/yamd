@@ -111,6 +111,17 @@ function rendercommonjs(name, data) {
     ]);
 }
 
+function renderAMD(name, data) {
+    return new JS([
+        "define([], function() {",
+            new JS([
+                renderiife(name, data),
+                "return " + name + ";"
+            ]).shift(),
+        "});"
+    ]);
+}
+
 var parser = new ArgumentParser({
     version: '0.0.1',
     addHelp:true,
@@ -123,8 +134,13 @@ parser.addArgument(
 );
 parser.addArgument(
     ["-c", "--commonjs"], {
-        action: "storeTrue",
-        help: 'a path to a folder containing library\'s files'
+        action: "storeTrue"
+    }
+);
+
+parser.addArgument(
+    ["-a", "--amd"], {
+        action: "storeTrue"
     }
 );
 
@@ -137,5 +153,8 @@ if (data.length==0) {
 var name = path.basename(args.path);
 if (args.commonjs) {
     fs.writeFileSync(name + ".common.js", rendercommonjs(name, data).str(), {flag: "w"});
+}
+if (args.amd) {
+    fs.writeFileSync(name + ".amd.js", renderAMD(name, data).str(), {flag: "w"});
 }
 fs.writeFileSync(name + ".js", renderiife(name, data).str(), {flag: "w"});
