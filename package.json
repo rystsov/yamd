@@ -9,7 +9,8 @@
         "url": "https://github.com/rystsov/yamd.git"
     },
     "dependencies": {
-        "argparse": "*"
+        "argparse": "*",
+        "mkdirp": "*"
     },
     "bin": {
         "yamd": "yamd.js"
